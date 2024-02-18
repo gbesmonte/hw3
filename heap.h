@@ -64,7 +64,7 @@ private:
   /// Add whatever helper functions and data members you need below
 	size_t _size = 0;
 	int _m;
-	PComparator _c;
+	PComparator* _c;
 	std::vector<T> arr;
 };
 
@@ -73,7 +73,7 @@ private:
 template <typename T, typename PComparator>
 Heap<T, PComparator>::Heap(int m, PComparator c){
 	_m = m;
-	_c = c;
+	*_c = c;
 }
 
 template <typename T, typename PComparator>
@@ -84,6 +84,7 @@ template <typename T, typename PComparator>
 void Heap<T, PComparator>::push(const T& item){
 	//Step 1: Add to end of list
 	arr.push_back(item);
+	_size++;
 	//Step 2: Put it in the right place
 	std::size_t index = arr.size() - 1;
 	while (index != 0) {
@@ -91,7 +92,7 @@ void Heap<T, PComparator>::push(const T& item){
 		T& current = arr[index];
 		T& parent = arr[parent_index];
 		//if parent is better, do not need to change
-		if (_c(parent, current)) {
+		if ((*_c)(parent, current)) {
 			break;
 		}
 		//if parent is not better, swap
@@ -132,6 +133,7 @@ void Heap<T,PComparator>::pop()
 	//Step 1 & 2: Swap with last element and delete
 	std::swap(arr[0], arr[arr.size()-1]);
 	arr.pop_back();
+	_size--;
 	//Step 3: Put first element in correct place
 	std::size_t index = 0;
 	while (index <= arr.size()-1){
@@ -146,7 +148,7 @@ void Heap<T,PComparator>::pop()
 			T& current = arr[index];
 			T& left_child = arr[left_child_index];
 			//if left child is better than current, swap
-			if (_c(left_child, current)){
+			if ((*_c)(left_child, current)){
 				std::swap(current, arr[left_child_index]);
 			}
 			break;
@@ -156,11 +158,11 @@ void Heap<T,PComparator>::pop()
 		T& right_child = arr[right_child_index];
 		//finds if left or right child is better
 		std::size_t max_index = left_child_index;
-		if (_c(left_child, right_child)){
+		if ((*_c)(right_child, left_child)){
 			max_index = right_child_index;
 		}
 		//if best child is worse than current, do nothing
-		if (_c(arr[max_index], current)){
+		if ((*_c)(current, arr[max_index])){
 			break;
 		}
 		//if not, swap
