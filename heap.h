@@ -136,38 +136,34 @@ void Heap<T,PComparator>::pop()
 	_size--;
 	//Step 3: Put first element in correct place
 	std::size_t index = 0;
-	while (index <= arr.size()-1){
-		std::size_t left_child_index = (index * _m) + 1;
-		std::size_t right_child_index = (index * _m) + 2;
-		//checks if there is a left child
-		if (left_child_index >= arr.size()){
+	while (index <= arr.size()-1 && !empty()){
+		std::size_t child_index = _m * index + 1;
+		std::size_t max_child_index = _m * index + 1;
+		//if no children, break
+		if (child_index > arr.size() - 1){
 			break;
 		}
-		//checks if there is a right child
-		if (right_child_index >= arr.size()){
-			T& current = arr[index];
-			T& left_child = arr[left_child_index];
-			//if left child is better than current, swap
-			if ((*_c)(left_child, current)){
-				std::swap(current, arr[left_child_index]);
+		//find best child
+		//while still in range of children
+		while (child_index <= (_m * index + _m)){
+			//if child does not exist
+			if (child_index > arr.size() - 1){
+				break;
 			}
-			break;
-		}
-		T& current = arr[index];
-		T& left_child = arr[left_child_index];
-		T& right_child = arr[right_child_index];
-		//finds if left or right child is better
-		std::size_t max_index = left_child_index;
-		if ((*_c)(right_child, left_child)){
-			max_index = right_child_index;
+			//if curr child is better than max child
+			//max child = curr child
+			if ((*_c)(arr[child_index], arr[max_child_index])){
+				max_child_index = child_index;
+			}
+			child_index++;
 		}
 		//if best child is worse than current, do nothing
-		if ((*_c)(current, arr[max_index])){
+		if ((*_c)(arr[index], arr[max_child_index])){
 			break;
 		}
 		//if not, swap
-		std::swap(current, arr[max_index]);
-		index = max_index;
+		std::swap(arr[max_child_index], arr[index]);
+		index = max_child_index;
 	}
 }
 
