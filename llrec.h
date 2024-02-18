@@ -84,7 +84,35 @@ Node* llfilter(Node* head, Comp pred)
     // Provide your implementation below
     //*********************************************
 
+	//Base case: reached the end
+	if (head == nullptr){
+		return nullptr;
+	}
 
+	//Head recursion: n is the value returned by next function called
+	Node* n = llfilter(head->next, pred);
+
+	//if head->value fits requirement
+	if (pred(head->val)){
+		//if it is the last in list that fits requirement
+		if (n == nullptr){
+			return head;
+		}
+		//if it is not the last in list that fits requirement
+		else{
+			head->next = n;
+			return head;
+		}
+	}
+	//if doesnt fit requirement
+	else{
+		//delete it if not null
+		if (head != nullptr){
+			delete head;
+		}
+		//return the next possible val
+		return n;
+	}
 }
 
 #endif
