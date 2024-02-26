@@ -93,9 +93,10 @@ Node* llfilter(Node* head, Comp pred)
 	Node* n = llfilter(head->next, pred);
 
 	//if head->value fits requirement
-	if (pred(head->val)){
+	if (!pred(head->val)){
 		//if it is the last in list that fits requirement
 		if (n == nullptr){
+			head->next = nullptr;
 			return head;
 		}
 		//if it is not the last in list that fits requirement

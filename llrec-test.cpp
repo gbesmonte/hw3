@@ -91,13 +91,13 @@ int main(int argc, char* argv[])
     print(head);
 
     // Test out your linked list code
-		/*isOdd a;
+		isOdd a;
 		Node* n = llfilter(head, a);
     
 		print(n);
-		dealloc(n);*/
+		dealloc(n);
 
-		Node* smaller;
+		/*Node* smaller;
 		Node* larger;
 		llpivot(head, smaller, larger, 6);
 
@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
 		print(larger);
 
 		dealloc(smaller);
-		dealloc(larger);
+		dealloc(larger);*/
     
     return 0;
 
